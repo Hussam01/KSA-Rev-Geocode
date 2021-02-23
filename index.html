@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSSample</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+</head>
+<body>
+<h2>Please enter the long and lat coordinates</h2>
+<form action="/action_page.php">
+    <label for="fname">lat:</label><br>
+    <input class="lat" type="text" value="26.3869811"><br>
+    <label for="lat">long:</label><br>
+    <input class="long" type="text" value="50.1803932"><br><br>
+</form> 
+<button class="myBtn">Try it</button>
+
+
+
+<h1 class="change-1">Here is the data</h1>
+<script type="text/javascript">
+let dist = document.querySelector(".change-1");
+let sub = document.querySelector(".myBtn");
+let lat = document.querySelector(".lat").value;
+let long = document.querySelector(".long").value;
+
+sub.addEventListener("click", () => {
+    $(function() {
+        var params = {
+            // Request parameters
+            "lat": lat,
+            "long": long,
+            "language": "E",
+            "format": "json",
+            "encode": "utf8",
+        };
+      
+        $.ajax({
+            url: "https://apina.address.gov.sa/NationalAddress/v3.1/Address/address-geocode?" + $.param(params),
+            beforeSend: function(xhrObj){
+                // Request headers
+                xhrObj.setRequestHeader("api_key","5f930062f95944a0a93a700cc6cb1a08");
+            },
+            type: "GET",
+            // Request body
+            data: "{body}",
+        })
+        .done(function(data) {
+            console.log(data.Addresses[0].District)
+            dist.textContent = (data.Addresses[0].District);
+            //console.log(data.Addresses)
+            //console.log(data);
+            alert("success");
+        })
+        .fail(function() {
+            alert("error");
+        });
+    });
+});
+</script>
+</body>
+</html>
+
